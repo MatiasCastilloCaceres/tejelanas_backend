@@ -1,0 +1,87 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Proxy Tejelanas Vivi",
+        "description": "API proxy para consultar información de Tejelanas Vivi con CORS habilitado",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Servidor proxy local"
+        }
+    ],
+    "paths": {
+        "/api/products-services": {
+            "get": {
+                "tags": [
+                    "Tejelanas Proxy"
+                ],
+                "summary": "Obtener productos y servicios",
+                "description": "Consulta productos y servicios desde API externa",
+                "operationId": "getProductsServices",
+                "responses": {
+                    "200": {
+                        "description": "Datos obtenidos exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "source": {
+                                            "type": "string",
+                                            "example": "external_api"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/about-us": {
+            "get": {
+                "tags": [
+                    "Tejelanas Proxy"
+                ],
+                "summary": "Obtener información sobre nosotros",
+                "description": "Consulta información sobre Tejelanas Vivi desde API externa",
+                "operationId": "getAboutUs",
+                "responses": {
+                    "200": {
+                        "description": "Información obtenida exitosamente"
+                    }
+                }
+            }
+        },
+        "/api/faq": {
+            "get": {
+                "tags": [
+                    "Tejelanas Proxy"
+                ],
+                "summary": "Obtener FAQ",
+                "description": "Consulta preguntas frecuentes desde API externa",
+                "operationId": "getFaq",
+                "responses": {
+                    "200": {
+                        "description": "FAQ obtenido exitosamente"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Tejelanas Proxy",
+            "description": "Tejelanas Proxy"
+        }
+    ]
+}
