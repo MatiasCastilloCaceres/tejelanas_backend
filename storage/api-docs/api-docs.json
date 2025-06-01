@@ -12,6 +12,577 @@
         }
     ],
     "paths": {
+        "/api/v1/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Obtener lista de categorías",
+                "operationId": "52c3c8d702572c2b4347b0ecf7573e54",
+                "responses": {
+                    "200": {
+                        "description": "Lista de categorías",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Category"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Crear nueva categoría",
+                "operationId": "f9171669d626697cd543f9f421cff718",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Lanas Premium"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Lanas de alta calidad"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Categoría creada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/categories/{id}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Obtener categoría específica",
+                "operationId": "11d2d45398d538612b1a4156d210652e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Categoría obtenida"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Actualizar categoría",
+                "operationId": "8edd529bf8c5d2c024f479805defe8b6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Categoría actualizada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Eliminar categoría",
+                "operationId": "91c938105382f9b2d833cb18706e6694",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Categoría eliminada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/performance": {
+            "get": {
+                "tags": [
+                    "Documentation"
+                ],
+                "summary": "Información de rendimiento de la API",
+                "description": "Retorna información sobre rendimiento, rate limiting y optimización",
+                "operationId": "f628a18f0ec0db76794fef1b28cc3189",
+                "responses": {
+                    "200": {
+                        "description": "Información de rendimiento obtenida exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Información de rendimiento obtenida"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "rate_limiting": {
+                                                    "properties": {
+                                                        "limit": {
+                                                            "description": "Requests por minuto",
+                                                            "type": "integer",
+                                                            "example": 100
+                                                        },
+                                                        "window": {
+                                                            "description": "Ventana de tiempo",
+                                                            "type": "string",
+                                                            "example": "1 minute"
+                                                        },
+                                                        "headers": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string"
+                                                            },
+                                                            "example": [
+                                                                "X-RateLimit-Limit",
+                                                                "X-RateLimit-Remaining",
+                                                                "X-RateLimit-Reset"
+                                                            ]
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "caching": {
+                                                    "properties": {
+                                                        "ttl_get_requests": {
+                                                            "description": "TTL para requests GET",
+                                                            "type": "string",
+                                                            "example": "10 minutes"
+                                                        },
+                                                        "cache_key_format": {
+                                                            "description": "Formato de clave de cache",
+                                                            "type": "string",
+                                                            "example": "api_cache:md5(url)"
+                                                        },
+                                                        "headers": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string"
+                                                            },
+                                                            "example": [
+                                                                "X-Cache",
+                                                                "X-Cache-Key",
+                                                                "X-Cache-TTL"
+                                                            ]
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "response_times": {
+                                                    "properties": {
+                                                        "expected_get": {
+                                                            "description": "Tiempo esperado para GET",
+                                                            "type": "string",
+                                                            "example": "< 150ms"
+                                                        },
+                                                        "expected_post": {
+                                                            "description": "Tiempo esperado para POST",
+                                                            "type": "string",
+                                                            "example": "< 300ms"
+                                                        },
+                                                        "expected_put": {
+                                                            "description": "Tiempo esperado para PUT",
+                                                            "type": "string",
+                                                            "example": "< 250ms"
+                                                        },
+                                                        "expected_delete": {
+                                                            "description": "Tiempo esperado para DELETE",
+                                                            "type": "string",
+                                                            "example": "< 200ms"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "optimization_tips": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "Use pagination with per_page parameter (max 100)",
+                                                        "Filter results using query parameters",
+                                                        "Cache GET requests are served from cache for 10 minutes",
+                                                        "Include only necessary fields in requests",
+                                                        "Use bulk operations when possible"
+                                                    ]
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/examples": {
+            "get": {
+                "tags": [
+                    "Documentation"
+                ],
+                "summary": "Ejemplos de uso de la API",
+                "description": "Retorna ejemplos de diferentes tipos de datos y estructuras",
+                "operationId": "3b4759f7af6d0a848d1b01b1561aac3f",
+                "responses": {
+                    "200": {
+                        "description": "Ejemplos obtenidos exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ejemplos de uso obtenidos"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "product_examples": {
+                                                    "properties": {
+                                                        "basic_product": {
+                                                            "properties": {
+                                                                "name": {
+                                                                    "type": "string",
+                                                                    "example": "Lana Merino Básica"
+                                                                },
+                                                                "price": {
+                                                                    "type": "number",
+                                                                    "example": 15990.5
+                                                                },
+                                                                "stock": {
+                                                                    "type": "integer",
+                                                                    "example": 25
+                                                                },
+                                                                "category_id": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "complete_product": {
+                                                            "properties": {
+                                                                "name": {
+                                                                    "type": "string",
+                                                                    "example": "Lana Alpaca Premium"
+                                                                },
+                                                                "description": {
+                                                                    "type": "string",
+                                                                    "example": "Lana de alpaca premium, suave y cálida"
+                                                                },
+                                                                "price": {
+                                                                    "type": "number",
+                                                                    "example": 24990
+                                                                },
+                                                                "stock": {
+                                                                    "type": "integer",
+                                                                    "example": 15
+                                                                },
+                                                                "category_id": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                },
+                                                                "weight": {
+                                                                    "type": "number",
+                                                                    "example": 100
+                                                                },
+                                                                "color": {
+                                                                    "type": "string",
+                                                                    "example": "Natural"
+                                                                },
+                                                                "material": {
+                                                                    "type": "string",
+                                                                    "example": "100% Alpaca"
+                                                                },
+                                                                "status": {
+                                                                    "type": "string",
+                                                                    "example": "active"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "workshop_examples": {
+                                                    "properties": {
+                                                        "basic_workshop": {
+                                                            "properties": {
+                                                                "title": {
+                                                                    "type": "string",
+                                                                    "example": "Crochet Básico"
+                                                                },
+                                                                "date": {
+                                                                    "type": "string",
+                                                                    "example": "2025-07-15"
+                                                                },
+                                                                "time": {
+                                                                    "type": "string",
+                                                                    "example": "14:00"
+                                                                },
+                                                                "duration": {
+                                                                    "type": "integer",
+                                                                    "example": 120
+                                                                },
+                                                                "price": {
+                                                                    "type": "number",
+                                                                    "example": 25000
+                                                                },
+                                                                "max_participants": {
+                                                                    "type": "integer",
+                                                                    "example": 8
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "filter_examples": {
+                                                    "properties": {
+                                                        "products_by_category": {
+                                                            "type": "string",
+                                                            "example": "/api/v1/products?category_id=1"
+                                                        },
+                                                        "active_products": {
+                                                            "type": "string",
+                                                            "example": "/api/v1/products?status=active"
+                                                        },
+                                                        "products_pagination": {
+                                                            "type": "string",
+                                                            "example": "/api/v1/products?page=2&per_page=20"
+                                                        },
+                                                        "workshops_by_date": {
+                                                            "type": "string",
+                                                            "example": "/api/v1/workshops?date_from=2025-06-01&date_to=2025-12-31"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Obtener lista de productos",
+                "operationId": "072fd15d3be55577bb08c19d19f1e75c",
+                "responses": {
+                    "200": {
+                        "description": "Lista de productos obtenida exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Productos obtenidos exitosamente"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "products": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Product"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Crear un nuevo producto",
+                "operationId": "eda0d526a50c0273ae224eb766440226",
+                "responses": {
+                    "201": {
+                        "description": "Producto creado exitosamente"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/products/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Obtener un producto específico",
+                "operationId": "e607d06420046014759462af284aeb59",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Producto obtenido exitosamente"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Actualizar un producto",
+                "operationId": "d3addbe72313169741e652404694ef9d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Producto actualizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Eliminar un producto",
+                "operationId": "bbf520f1a23d6a5f3dfb12813b5930d6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Producto eliminado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/products-services": {
             "get": {
                 "tags": [
@@ -76,9 +647,366 @@
                     }
                 }
             }
+        },
+        "/api/v1/workshops": {
+            "get": {
+                "tags": [
+                    "Workshops"
+                ],
+                "summary": "Obtener lista de talleres",
+                "operationId": "021a79b046ed6c7464f3f6c6a349dc74",
+                "responses": {
+                    "200": {
+                        "description": "Lista de talleres",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Workshop"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Workshops"
+                ],
+                "summary": "Crear nuevo taller",
+                "operationId": "36306da80cf57dbcdd8612a622e78b31",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Crochet Básico"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-07-15"
+                                    },
+                                    "time": {
+                                        "type": "string",
+                                        "example": "14:00"
+                                    },
+                                    "duration": {
+                                        "type": "integer",
+                                        "example": 120
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "example": 25000
+                                    },
+                                    "max_participants": {
+                                        "type": "integer",
+                                        "example": 8
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Taller creado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/workshops/{id}": {
+            "get": {
+                "tags": [
+                    "Workshops"
+                ],
+                "summary": "Obtener taller específico",
+                "operationId": "b670675804aacd742ff5b376cdb4e093",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Taller obtenido"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Workshops"
+                ],
+                "summary": "Actualizar taller",
+                "operationId": "b6153f66b525efb16301602c02f5da7d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Taller actualizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Workshops"
+                ],
+                "summary": "Eliminar taller",
+                "operationId": "b1f8e7723e22e581cd1ebc3a32f4caa2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Taller eliminado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Workshop": {
+                "title": "Workshop",
+                "description": "Taller de crochet de Tejelanas Vivi",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Taller de Crochet Básico"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Aprende los fundamentos del crochet"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-06-15"
+                    },
+                    "time": {
+                        "type": "string",
+                        "format": "time",
+                        "example": "14:00:00"
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "example": 120
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 25000
+                    },
+                    "max_participants": {
+                        "type": "integer",
+                        "example": 8
+                    },
+                    "current_participants": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "location": {
+                        "type": "string",
+                        "example": "TEJElANAS, Laguna de Zapallar"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive",
+                            "full",
+                            "cancelled"
+                        ],
+                        "example": "active"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Category": {
+                "title": "Category",
+                "description": "Categoría de productos",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Lanas"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Lanas naturales y sintéticas"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive"
+                        ],
+                        "example": "active"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Product": {
+                "title": "Product",
+                "description": "Producto de Tejelanas Vivi",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Lana Natural Merino"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Lana natural de alta calidad"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 15990.5
+                    },
+                    "stock": {
+                        "type": "integer",
+                        "example": 25
+                    },
+                    "category_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "weight": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 100
+                    },
+                    "color": {
+                        "type": "string",
+                        "example": "Azul marino"
+                    },
+                    "material": {
+                        "type": "string",
+                        "example": "100% Lana Merino"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive"
+                        ],
+                        "example": "active"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "description": "Token de autenticación Bearer. Tokens válidos para pruebas: tejelanas_admin_token_2025, development_token_123, test_token_456"
+            }
         }
     },
     "tags": [
+        {
+            "name": "Categories",
+            "description": "Operaciones CRUD para categorías de productos"
+        },
+        {
+            "name": "Documentation",
+            "description": "Información sobre la API y rendimiento"
+        },
+        {
+            "name": "Products",
+            "description": "Operaciones CRUD para productos de Tejelanas Vivi"
+        },
+        {
+            "name": "Workshops",
+            "description": "Operaciones CRUD para talleres de crochet"
+        },
         {
             "name": "Tejelanas Proxy",
             "description": "Tejelanas Proxy"
