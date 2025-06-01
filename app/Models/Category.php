@@ -29,11 +29,13 @@ class Category extends Model
         'status'
     ];
 
+    // Relación con productos
     public function products()
     {
         return $this->hasMany(Product::class);
     }
 
+    // Scope para categorías activas
     public function scopeActive($query)
     {
         return $query->where('status', 'active');

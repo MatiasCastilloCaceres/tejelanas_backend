@@ -47,13 +47,21 @@ class Product extends Model
         'weight' => 'decimal:2'
     ];
 
+    // Relación con categoría
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
+    // Scope para productos activos
     public function scopeActive($query)
     {
         return $query->where('status', 'active');
+    }
+
+    // Scope para productos con stock
+    public function scopeInStock($query)
+    {
+        return $query->where('stock', '>', 0);
     }
 }

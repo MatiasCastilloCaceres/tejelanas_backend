@@ -10,16 +10,18 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('about_us', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
+            $table->string('title');
+            $table->text('content');
+            $table->string('image_url')->nullable();
+            $table->enum('section', ['historia', 'mision', 'vision', 'valores']);
+            $table->integer('order')->default(1);
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
 
-            // Índices para optimizar consultas
-            $table->index('status');
-            $table->index('name');
+            $table->index(['section', 'status']);
+            $table->index('order');
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('about_us');
     }
 };

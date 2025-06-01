@@ -27,6 +27,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
@@ -234,6 +235,61 @@ class ProductController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error al eliminar'
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/v1/products-services",
+     *     tags={"Products"},
+     *     summary="Obtener productos y servicios (endpoint compatible)",
+     *     description="Endpoint compatible con sistema existente de Tejelanas Vivi",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Productos y servicios obtenidos exitosamente"
+     *     )
+     * )
+     */
+    public function productsServices(Request $request): JsonResponse
+    {
+        $startTime = microtime(true);
+
+        try {
+            // Obtener productos activos
+            $products = Product::with('category')
+                ->active()
+                ->select(['id', 'name', 'description', 'price', 'stock', 'category_id', 'image_url', 'material', 'color'])
+                ->orderBy('name')
+                ->get();
+
+            // Obtener talleres próximos como "servicios"
+            $workshops = Workshop::upcoming()
+                ->available()
+                ->select(['id', 'title as name', 'description', 'price', 'date', 'time', 'duration', 'max_participants', 'current_participants'])
+                ->orderBy('date')
+                ->limit(10)
+                ->get();
+
+            $responseTime = round((microtime(true) - $startTime), 3);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Productos y servicios obtenidos exitosamente',
+                'data' => [
+                    'products' => $products,
+                    'services' => $workshops,
+                    'categories' => Category::active()->get(['id', 'name']),
+                    'featured' => $products->where('stock', '>', 10)->take(6)->values()
+                ],
+                'response_time' => $responseTime
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error en ProductController@productsServices: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error interno del servidor'
             ], 500);
         }
     }
